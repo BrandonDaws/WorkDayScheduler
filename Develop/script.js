@@ -7,49 +7,69 @@ var timeBlock;
 var hourBlock;
 var eventBlock;
 var saveButton;
-
+var currentTime = moment().format("HH")
 
 
 function displaySchedule() {
-    $.each(timeForDay, function(index,time){
-      //section for time on left
+    $.each(timeForDay, function (index, time) {
+        var eventBlock = $("#" + timeValue[index]);
+
+        //section for time on left
         timeBlock = $("<section>");
         timeBlock.addClass("row");
 
         hourBlock = $("<div>");
         hourBlock.addClass("hour col-2 col-lg-1");
-        hourBlock.css("text-align","center");
-        hourBlock.css("padding-top","31.5px");
+        hourBlock.css("text-align", "center");
+        hourBlock.css("padding-top", "31.5px");
         hourBlock.text(time);
 
         eventBlock = $("<textarea>");
         eventBlock.addClass("description col-8");
         eventBlock.css("padding-right", "31.5px");
-        eventBlock.text('');
-        
-        
-        
+        eventBlock.attr("id", timeValue[index]);
 
         
-        
+       
+          
 
         saveButton = $("<button>")
-        saveButton.addClass("saveBtn col-2");
+        saveButton.addClass("saveBtn fa fa-save col-2");
+        saveButton.on("click", function(){
+            localStorage.setItem("task", eventBlock.Value)
+        });
+        console.log(localStorage);
+
         
-        
-        
 
-
-
-
-
-
-        timeBlock.append(hourBlock,eventBlock,saveButton);
-
-    $(".container").append(timeBlock);
+        timeBlock.append(hourBlock, eventBlock, saveButton);
+        $(".container").append(timeBlock,);
 
     })
 }
 
 
+
+
+function checkTime() {
+  var now = moment()
+    //var currentTime = moment().format('HH');
+  
+    $.each(timeValue, function (index, time) {
+        eventBlock = $("#" + timeValue[index]);
+
+        if (eventBlock[0].id < now.hour()) {
+            eventBlock.addClass("past");
+
+        } else if (eventBlock[0].id === now.hour()) {
+            eventBlock.addClass("present")
+
+        } else {
+            eventBlock.addClass("future")
+        };
+
+    });
+}
+
 displaySchedule();
+checkTime();
