@@ -30,18 +30,12 @@ function displaySchedule() {
         eventBlock.attr("id", timeValue[index]);
 
         
-       
-          
-
         saveButton = $("<button>")
         saveButton.addClass("saveBtn fa fa-save col-2");
         saveButton.on("click", function(){
-            localStorage.setItem("task", eventBlock.Value)
+            localStorage.setItem("task", eve)
         });
-        console.log(localStorage);
-
         
-
         timeBlock.append(hourBlock, eventBlock, saveButton);
         $(".container").append(timeBlock,);
 
@@ -63,13 +57,24 @@ function checkTime() {
 
         } else if (eventBlock[0].id === now.hour()) {
             eventBlock.addClass("present")
-
+ 
         } else {
             eventBlock.addClass("future")
         };
 
     });
 }
+
+function saveEvents(event){
+    event.preventDefault()
+    var itemId = event.currentTarget.id
+    var itemValue =  event.currentTarget.previousSibling.value
+    localStorage.setItem("eventEntry" + event.currentTarget.id, event.currentTarget.previousSibling.value);
+    console.log(itemId);
+    console.log(itemValue);
+}
+
+
 
 displaySchedule();
 checkTime();
